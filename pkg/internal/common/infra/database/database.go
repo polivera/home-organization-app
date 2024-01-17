@@ -1,7 +1,12 @@
 package database
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+)
 
 type Connection interface {
-	Connect() (*sql.DB, error)
+	Open() error
+	GetDB() *sql.DB
+	Connect(ctx context.Context) (*sql.Conn, error)
 }

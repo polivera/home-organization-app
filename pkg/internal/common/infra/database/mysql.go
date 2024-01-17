@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/url"
@@ -11,6 +12,7 @@ import (
 )
 
 type mysqlDB struct {
+	db     *sql.DB
 	host   string
 	port   uint16
 	user   string
@@ -22,13 +24,20 @@ func NewMySQLConnection() Connection {
 	return &mysqlDB{}
 }
 
-func (mdb *mysqlDB) Connect() (*sql.DB, error) {
-	if err := mdb.fillConnectionData(); err != nil {
-		return nil, err
+func (mdb *mysqlDB) Open() error {
+	var err error
+	if err = mdb.fillConnectionData(); err == nil {
+		mdb.db, err = sql.Open("mysql", mdb.buildConnectionString())
 	}
-	db, err := sql.Open("mysql", mdb.buildConnectionString())
+	return err
+}
 
-	return db, err
+func (mdb *mysqlDB) Connect(ctx context.Context) (*sql.Conn, error) {
+	return mdb.db.Conn(ctx)
+}
+
+func (mdb *mysqlDB) GetDB() *sql.DB {
+	return mdb.db
 }
 
 func (mdb *mysqlDB) fillConnectionData() error {
