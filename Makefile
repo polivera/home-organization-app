@@ -10,8 +10,7 @@ DB_NAME ?= homeorg
 conStr := "mysql://${DB_USER}:${DB_PASS}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}"
 
 test:
-	@echo $(conStr)
-
+	@echo
 
 # Install required packages
 install:
@@ -21,5 +20,9 @@ install:
 migration-install-tool:
 	go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+# Create a new migration
+migration-create:
+	migrate create -ext sql -dir ./migrations -seq ${MIG_NAME}
+
 migration-up:
-	migrate -source file://migrations -database mysql://root:secret@tcp(192.168.0.152)/dbname?query up
+	migrate -path ./migrations -database ${conStr} up
