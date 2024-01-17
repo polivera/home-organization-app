@@ -1,3 +1,18 @@
+
+
+# Set variables
+DB_USER ?= root
+DB_PASS ?= secret
+DB_HOST ?= localhost
+DB_PORT ?= 3306
+DB_NAME ?= homeorg
+
+conStr := "mysql://${DB_USER}:${DB_PASS}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}"
+
+test:
+	@echo $(conStr)
+
+
 # Install required packages
 install:
 	go mod vendor
