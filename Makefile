@@ -11,15 +11,15 @@ install:
 	go mod vendor
 
 # Migration with migration tool
-migration-install-tool:
+migrate-tool-install:
 	go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 # Create a new migration
-migration-create:
+migrate-create:
 	migrate create -ext sql -dir ./migrations -seq ${MIG_NAME}
 
-migration-up:
-	@migrate -path ./migrations -database ${conStr} up
+migrate-up:
+	@migrate -path ./migrations -database ${conStr} up ${STEP}
 
-migration-down:
-	@migrate -path ./migrations -database ${conStr} down
+migrate-down:
+	@migrate -path ./migrations -database ${conStr} down ${STEP}
