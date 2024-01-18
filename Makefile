@@ -26,3 +26,6 @@ migration-create:
 
 migration-up:
 	migrate -path ./migrations -database ${conStr} up
+
+migration-down:
+	migrate -path ./migrations -database ${conStr} down
