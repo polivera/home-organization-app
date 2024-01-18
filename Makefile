@@ -1,16 +1,10 @@
-
-
-# Set variables
-DB_USER ?= root
-DB_PASS ?= secret
-DB_HOST ?= localhost
-DB_PORT ?= 3306
-DB_NAME ?= homeorg
+#!make
+include .env
 
 conStr := "mysql://${DB_USER}:${DB_PASS}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}"
 
 test:
-	@echo
+	@echo ${conStr}
 
 # Install required packages
 install:
@@ -25,7 +19,7 @@ migration-create:
 	migrate create -ext sql -dir ./migrations -seq ${MIG_NAME}
 
 migration-up:
-	migrate -path ./migrations -database ${conStr} up
+	@migrate -path ./migrations -database ${conStr} up
 
 migration-down:
-	migrate -path ./migrations -database ${conStr} down
+	@migrate -path ./migrations -database ${conStr} down
