@@ -8,8 +8,9 @@ install:
 	go mod vendor
 
 # Migration with migration tool
-migrate-tool-install:
+install-tools:
 	go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+	go install github.com/rinchsan/gosimports/cmd/gosimports@latest
 
 # Create a new migration
 migrate-create:

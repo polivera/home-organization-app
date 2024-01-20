@@ -6,4 +6,4 @@ create table `homeorg`.`grocery_list_products` (
 
     foreign key (list_id) references `homeorg`.`grocery_lists`(id),
     foreign key (product_id) references `homeorg`.`products`(id)
-)
+);
