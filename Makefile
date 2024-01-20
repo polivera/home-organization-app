@@ -3,9 +3,6 @@ include .env
 
 conStr := "mysql://${DB_USER}:${DB_PASS}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}"
 
-test:
-	@echo ${conStr}
-
 # Install required packages
 install:
 	go mod vendor
