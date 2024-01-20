@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/polivera/home-organization-app/pkg"
 
 func main() {
-	fmt.Println("this stuff work")
+	pkg.Foobar()
 }
