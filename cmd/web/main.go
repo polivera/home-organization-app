@@ -1,7 +1,7 @@
 package main
 
-import "github.com/polivera/home-organization-app/pkg"
+import userservice "github.com/polivera/home-organization-app/internal/user/domain/service"
 
 func main() {
-	pkg.Foobar()
+	userservice.Handle()
 }

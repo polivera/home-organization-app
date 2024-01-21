@@ -29,16 +29,21 @@ func (mdb *mysqlDB) Open() error {
 	var err error
 	if err = mdb.fillConnectionData(); err == nil {
 		mdb.db, err = sql.Open("mysql", mdb.buildConnectionString())
+		err = mdb.db.PingContext(mdb.ctx)
 	}
 	return err
 }
 
-func (mdb *mysqlDB) Connect() (*sql.Conn, error) {
-	return mdb.db.Conn(mdb.ctx)
+func (mdb *mysqlDB) QueryWithParams(sql string, args ...any) (*sql.Rows, error) {
+	return mdb.db.QueryContext(mdb.ctx, sql, args)
 }
 
-func (mdb *mysqlDB) Query(sql string, args ...any) (*sql.Rows, error) {
-	return mdb.db.QueryContext(mdb.ctx, sql, args)
+func (mdb *mysqlDB) Query(sql string) (*sql.Rows, error) {
+	return mdb.db.QueryContext(mdb.ctx, sql)
+}
+
+func (mdb *mysqlDB) Close() error {
+	return mdb.db.Close()
 }
 
 func (mdb *mysqlDB) fillConnectionData() error {
