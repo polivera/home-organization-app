@@ -34,12 +34,12 @@ func (mdb *mysqlDB) Open() error {
 	return err
 }
 
-func (mdb *mysqlDB) QueryWithParams(sql string, args ...any) (*sql.Rows, error) {
-	return mdb.db.QueryContext(mdb.ctx, sql, args)
+func (mdb *mysqlDB) Query(sql string, args ...interface{}) (*sql.Rows, error) {
+	return mdb.db.QueryContext(mdb.ctx, sql, args...)
 }
 
-func (mdb *mysqlDB) Query(sql string) (*sql.Rows, error) {
-	return mdb.db.QueryContext(mdb.ctx, sql)
+func (mdb *mysqlDB) QueryRow(sql string, args ...interface{}) *sql.Row {
+	return mdb.db.QueryRowContext(mdb.ctx, sql, args...)
 }
 
 func (mdb *mysqlDB) Close() error {

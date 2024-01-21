@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/user/infrastructure/repository"
 )
@@ -16,6 +17,7 @@ func Handle() {
 	}
 
 	repo := repository.NewUserRepository(con)
-	repo.GetActiveUserByEmail("test2@testmail.local")
+	data, _ := repo.GetVerifiedUserByEmail("test2@testmail.local")
 
+	fmt.Println(data)
 }
