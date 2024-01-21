@@ -1,3 +1,5 @@
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
+
 package database
 
 import (
@@ -7,6 +9,6 @@ import (
 type Connection interface {
 	Open() error
 	Close() error
-	Query(sql string, args ...interface{}) (*sql.Rows, error)
-	QueryRow(sql string, args ...interface{}) *sql.Row
+	Query(query string, args ...interface{}) (*sql.Rows, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
 }

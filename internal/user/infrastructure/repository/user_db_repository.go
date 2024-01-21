@@ -25,9 +25,6 @@ func (userRepo *userRepository) GetVerifiedUserByEmail(email string) (entity.Use
 		email,
 		entity.StatusVerified,
 	)
-	if err != nil {
-		return entity.UserEntity{}, err
-	}
 
 	var userEntity entity.UserEntity
 	if err = result.Scan(
