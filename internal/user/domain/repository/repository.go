@@ -1,7 +1,10 @@
 package repository
 
-import "github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
+import (
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
+	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
+)
 
 type UserRepository interface {
-	GetVerifiedUserByEmail(email string) (entity.UserEntity, error)
+	GetVerifiedUserByEmail(email valueobject.Email) (entity.UserEntity, error)
 }

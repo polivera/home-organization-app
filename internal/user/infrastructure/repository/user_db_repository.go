@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
 )
 
@@ -14,7 +15,7 @@ func NewUserRepository(db database.Connection) repository.UserRepository {
 	return &userRepository{dbConn: db}
 }
 
-func (userRepo *userRepository) GetVerifiedUserByEmail(email string) (entity.UserEntity, error) {
+func (userRepo *userRepository) GetVerifiedUserByEmail(email valueobject.Email) (entity.UserEntity, error) {
 	var err error
 	result := userRepo.dbConn.QueryRow(
 		`
@@ -22,20 +23,25 @@ func (userRepo *userRepository) GetVerifiedUserByEmail(email string) (entity.Use
 			FROM users u 
 			WHERE email = ? AND status = ?
 		`,
-		email,
+		email.Value(),
 		entity.StatusVerified,
 	)
 
 	var userEntity entity.UserEntity
+	var nullableSessionToken *string
 	if err = result.Scan(
 		&userEntity.Id,
 		&userEntity.Email,
 		&userEntity.Password,
 		&userEntity.Username,
-		&userEntity.SessionToken,
+		&nullableSessionToken,
 		&userEntity.Status,
 	); err != nil {
 		return entity.UserEntity{}, err
+	}
+
+	if nullableSessionToken != nil {
+		userEntity.SessionToken = *nullableSessionToken
 	}
 
 	return userEntity, nil

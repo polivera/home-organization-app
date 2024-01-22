@@ -1,23 +1,30 @@
 package service
 
 import (
-	"context"
 	"fmt"
-	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
-	"github.com/polivera/home-organization-app/internal/user/infrastructure/repository"
+	"github.com/polivera/home-organization-app/internal/user/domain"
+	"github.com/polivera/home-organization-app/internal/user/domain/repository"
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 )
 
-func Handle() {
-	ctx := context.Background()
-	con := database.NewMySQLConnection(ctx)
+type LookupService interface {
+	Handle(command domain.UserLookupCommand) (domain.UserDTO, error)
+}
 
-	err := con.Open()
+type lookupService struct {
+	userRepo repository.UserRepository
+}
+
+func NewLookupService(repo repository.UserRepository) LookupService {
+	return &lookupService{userRepo: repo}
+}
+
+func (ls *lookupService) Handle(command domain.UserLookupCommand) (domain.UserDTO, error) {
+	entity, err := ls.userRepo.GetVerifiedUserByEmail(valueobject.NewEmail(command.Email()))
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s", err.Error())
+		return domain.UserDTO{}, err
 	}
-
-	repo := repository.NewUserRepository(con)
-	data, _ := repo.GetVerifiedUserByEmail("test2@testmail.local")
-
-	fmt.Println(data)
+	fmt.Println(entity)
+	return domain.UserDTO{}, nil
 }

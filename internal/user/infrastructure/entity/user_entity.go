@@ -11,6 +11,6 @@ type UserEntity struct {
 	Email        string
 	Password     string
 	Username     string
-	SessionToken *string
+	SessionToken string
 	Status       uint8
 }
