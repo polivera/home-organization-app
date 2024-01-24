@@ -6,5 +6,5 @@ import (
 )
 
 type UserRepository interface {
-	GetVerifiedUserByEmail(email valueobject.Email) (entity.UserEntity, error)
+	GetVerifiedUserByEmail(email valueobject.Email) (*entity.UserEntity, error)
 }

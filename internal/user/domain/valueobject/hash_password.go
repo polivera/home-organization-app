@@ -9,13 +9,18 @@ type HashPassword interface {
 
 type hashPassword struct {
 	hash string
+	cost int
 }
 
 func NewHashFromPlain(plainPassword PlainPassword) (HashPassword, error) {
 	var err error
-	hashPass := &hashPassword{}
+	hashPass := &hashPassword{cost: 12}
 	hashPass.hash, err = hashPass.buildHash(plainPassword.GetValue())
 	return hashPass, err
+}
+
+func NewHashPassword(hashedPass string) HashPassword {
+	return &hashPassword{hash: hashedPass}
 }
 
 func (hp *hashPassword) GetHash() string {
@@ -28,6 +33,6 @@ func (hp *hashPassword) IsPasswordValid(passVO PlainPassword) bool {
 }
 
 func (hp *hashPassword) buildHash(plainPassword string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(plainPassword), 14)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(plainPassword), hp.cost)
 	return string(bytes), err
 }

@@ -16,6 +16,6 @@ func main() {
 		panic("can't open database")
 	}
 	userService := userservice.NewLookupService(repository.NewUserRepository(db))
-	userDTO, err := userService.Handle(domain.NewUserLookupCommand("test2@testmail.local", "Testonga"))
+	userDTO, err := userService.Handle(domain.NewUserLookupCommand("test2@testmail.local", "Test.123!"))
 	fmt.Println(err, userDTO)
 }

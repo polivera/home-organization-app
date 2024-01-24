@@ -1,5 +1,7 @@
 package domain
 
 type UserDTO struct {
-	Email string
+	Id       uint64
+	Email    string
+	Username string
 }

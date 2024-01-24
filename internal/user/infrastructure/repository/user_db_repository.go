@@ -15,7 +15,7 @@ func NewUserRepository(db database.Connection) repository.UserRepository {
 	return &userRepository{dbConn: db}
 }
 
-func (userRepo *userRepository) GetVerifiedUserByEmail(email valueobject.Email) (entity.UserEntity, error) {
+func (userRepo *userRepository) GetVerifiedUserByEmail(email valueobject.Email) (*entity.UserEntity, error) {
 	var err error
 	result := userRepo.dbConn.QueryRow(
 		`
@@ -37,12 +37,12 @@ func (userRepo *userRepository) GetVerifiedUserByEmail(email valueobject.Email) 
 		&nullableSessionToken,
 		&userEntity.Status,
 	); err != nil {
-		return entity.UserEntity{}, err
+		return nil, err
 	}
 
 	if nullableSessionToken != nil {
 		userEntity.SessionToken = *nullableSessionToken
 	}
 
-	return userEntity, nil
+	return &userEntity, nil
 }
