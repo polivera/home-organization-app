@@ -3,8 +3,9 @@
 package valueobject
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPlainPassword(t *testing.T) {

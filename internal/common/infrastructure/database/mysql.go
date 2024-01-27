@@ -29,7 +29,9 @@ func (mdb *mysqlDB) Open() error {
 	var err error
 	if err = mdb.fillConnectionData(); err == nil {
 		mdb.db, err = sql.Open("mysql", mdb.buildConnectionString())
-		err = mdb.db.PingContext(mdb.ctx)
+		if err == nil {
+			err = mdb.db.PingContext(mdb.ctx)
+		}
 	}
 	return err
 }
