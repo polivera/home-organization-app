@@ -4,7 +4,7 @@ create table if not exists `homeorg`.`users`
     email         varchar(200)    not null,
     password      varchar(200)    not null,
     username      varchar(200)    not null,
-    session_token char(64)        not null,
+    session_token char(64),
     status        tinyint         not null default 1,
 
     unique (email),

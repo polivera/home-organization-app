@@ -12,32 +12,40 @@ import (
 )
 
 type mysqlDB struct {
-	db     *sql.DB
 	host   string
 	port   uint16
 	user   string
 	pass   string
 	dbname string
+	db     *sql.DB
+	ctx    context.Context
 }
 
-func NewMySQLConnection() Connection {
-	return &mysqlDB{}
+func NewMySQLConnection(ctx context.Context) Connection {
+	return &mysqlDB{ctx: ctx}
 }
 
 func (mdb *mysqlDB) Open() error {
 	var err error
 	if err = mdb.fillConnectionData(); err == nil {
 		mdb.db, err = sql.Open("mysql", mdb.buildConnectionString())
+		if err == nil {
+			err = mdb.db.PingContext(mdb.ctx)
+		}
 	}
 	return err
 }
 
-func (mdb *mysqlDB) Connect(ctx context.Context) (*sql.Conn, error) {
-	return mdb.db.Conn(ctx)
+func (mdb *mysqlDB) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	return mdb.db.QueryContext(mdb.ctx, query, args...)
 }
 
-func (mdb *mysqlDB) GetDB() *sql.DB {
-	return mdb.db
+func (mdb *mysqlDB) QueryRow(query string, args ...interface{}) *sql.Row {
+	return mdb.db.QueryRowContext(mdb.ctx, query, args...)
+}
+
+func (mdb *mysqlDB) Close() error {
+	return mdb.db.Close()
 }
 
 func (mdb *mysqlDB) fillConnectionData() error {

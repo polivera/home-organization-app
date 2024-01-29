@@ -25,3 +25,6 @@ go.work
 
 # IDEs and editors folders
 .idea
+
+# Ignore mock files
+mock*

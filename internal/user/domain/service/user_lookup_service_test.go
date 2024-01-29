@@ -1,0 +1,105 @@
+package service
+
+import (
+	"errors"
+	"github.com/polivera/home-organization-app/internal/common"
+	"github.com/polivera/home-organization-app/internal/user/domain"
+	"github.com/polivera/home-organization-app/internal/user/domain/repository"
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
+	"github.com/polivera/home-organization-app/test/user/fakers"
+	"github.com/polivera/home-organization-app/test/user/matchers"
+	"github.com/stretchr/testify/assert"
+	"go.uber.org/mock/gomock"
+	"testing"
+)
+
+func TestLookupService_Handle(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	mockUserRepository := repository.NewMockUserRepository(ctrl)
+
+	t.Run("Email not valid", func(t *testing.T) {
+		cmd := domain.NewUserLookupCommand("wrongemail", "Test.123")
+		service := NewLookupService(mockUserRepository)
+
+		dto, err := service.Handle(cmd)
+		assert.Nil(t, dto)
+		assert.Error(t, err)
+
+		assert.IsType(t, common.ErrorValidation{}, err)
+		assert.Equal(t, "email is not valid", err.Error())
+	})
+
+	t.Run("Password not valid", func(t *testing.T) {
+
+		cmd := domain.NewUserLookupCommand("valid@emial.local", "wrongpass")
+		service := NewLookupService(mockUserRepository)
+
+		dto, err := service.Handle(cmd)
+		assert.Nil(t, dto)
+		assert.Error(t, err)
+
+		assert.IsType(t, common.ErrorValidation{}, err)
+		assert.Equal(t, "password is not valid", err.Error())
+	})
+
+	t.Run("Fail to retrieve user", func(t *testing.T) {
+		validEmail := "valid@email.local"
+		cmd := domain.NewUserLookupCommand(validEmail, "Test.123")
+
+		mockUserRepository.
+			EXPECT().
+			GetVerifiedUserByEmail(matchers.EmailMatcher(validEmail)).
+			Times(1).
+			Return(nil, errors.New("db error"))
+
+		service := NewLookupService(mockUserRepository)
+		dto, err := service.Handle(cmd)
+		assert.Nil(t, dto)
+		assert.Error(t, err)
+
+		assert.IsType(t, common.ErrorNotFound{}, err)
+		assert.Equal(t, validEmail+" not found", err.Error())
+	})
+
+	t.Run("Fail to retrieve user", func(t *testing.T) {
+		validEmail := "valid@email.local"
+		cmd := domain.NewUserLookupCommand(validEmail, "Test.123")
+		fakeEntity := fakers.UserFakerEntityRandom()
+
+		mockUserRepository.
+			EXPECT().
+			GetVerifiedUserByEmail(matchers.EmailMatcher(validEmail)).
+			Times(1).
+			Return(&fakeEntity, nil)
+
+		service := NewLookupService(mockUserRepository)
+		dto, err := service.Handle(cmd)
+		assert.Nil(t, dto)
+		assert.Error(t, err)
+
+		assert.IsType(t, common.ErrorNotFound{}, err)
+		assert.Equal(t, validEmail+" not found", err.Error())
+	})
+
+	t.Run("Happy Path", func(t *testing.T) {
+		validEmail := "valid@email.local"
+		validPass := "Test.123"
+		cmd := domain.NewUserLookupCommand(validEmail, validPass)
+		fakeEntity := fakers.UserFakerEntityRandom()
+		hashVO, err := valueobject.NewHashFromPlain(valueobject.NewPlainPassword(validPass))
+		assert.NoError(t, err)
+
+		fakeEntity.Password = hashVO.GetHash()
+		mockUserRepository.
+			EXPECT().
+			GetVerifiedUserByEmail(matchers.EmailMatcher(validEmail)).
+			Times(1).
+			Return(&fakeEntity, nil)
+
+		service := NewLookupService(mockUserRepository)
+		dto, err := service.Handle(cmd)
+		assert.NoError(t, err)
+		assert.Equal(t, fakeEntity.Email, dto.Email)
+		assert.Equal(t, fakeEntity.Username, dto.Username)
+	})
+}

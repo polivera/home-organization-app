@@ -1,9 +1,12 @@
+//go:build unit
+
 package database
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMysqlDB_fillConnectionData(t *testing.T) {
