@@ -3,12 +3,13 @@ package service
 import (
 	"github.com/polivera/home-organization-app/internal/common"
 	"github.com/polivera/home-organization-app/internal/user/domain"
+	"github.com/polivera/home-organization-app/internal/user/domain/command"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
 	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 )
 
 type LookupService interface {
-	Handle(command domain.UserLookupCommand) (*domain.UserDTO, error)
+	Handle(command command.UserLookupCommand) (*domain.UserDTO, error)
 }
 
 type lookupService struct {
@@ -19,7 +20,7 @@ func NewLookupService(repo repository.UserRepository) LookupService {
 	return &lookupService{userRepo: repo}
 }
 
-func (ls *lookupService) Handle(command domain.UserLookupCommand) (*domain.UserDTO, error) {
+func (ls *lookupService) Handle(command command.UserLookupCommand) (*domain.UserDTO, error) {
 	email := valueobject.NewEmail(command.Email())
 	password := valueobject.NewPlainPassword(command.Password())
 

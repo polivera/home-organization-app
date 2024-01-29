@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 	"github.com/polivera/home-organization-app/internal/common"
-	"github.com/polivera/home-organization-app/internal/user/domain"
+	"github.com/polivera/home-organization-app/internal/user/domain/command"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
 	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"github.com/polivera/home-organization-app/test/user/fakers"
@@ -18,7 +18,7 @@ func TestLookupService_Handle(t *testing.T) {
 	mockUserRepository := repository.NewMockUserRepository(ctrl)
 
 	t.Run("Email not valid", func(t *testing.T) {
-		cmd := domain.NewUserLookupCommand("wrongemail", "Test.123")
+		cmd := command.NewUserLookupCommand("wrongemail", "Test.123")
 		service := NewLookupService(mockUserRepository)
 
 		dto, err := service.Handle(cmd)
@@ -31,7 +31,7 @@ func TestLookupService_Handle(t *testing.T) {
 
 	t.Run("Password not valid", func(t *testing.T) {
 
-		cmd := domain.NewUserLookupCommand("valid@emial.local", "wrongpass")
+		cmd := command.NewUserLookupCommand("valid@emial.local", "wrongpass")
 		service := NewLookupService(mockUserRepository)
 
 		dto, err := service.Handle(cmd)
@@ -44,7 +44,7 @@ func TestLookupService_Handle(t *testing.T) {
 
 	t.Run("Fail to retrieve user", func(t *testing.T) {
 		validEmail := "valid@email.local"
-		cmd := domain.NewUserLookupCommand(validEmail, "Test.123")
+		cmd := command.NewUserLookupCommand(validEmail, "Test.123")
 
 		mockUserRepository.
 			EXPECT().
@@ -63,7 +63,7 @@ func TestLookupService_Handle(t *testing.T) {
 
 	t.Run("Fail to retrieve user", func(t *testing.T) {
 		validEmail := "valid@email.local"
-		cmd := domain.NewUserLookupCommand(validEmail, "Test.123")
+		cmd := command.NewUserLookupCommand(validEmail, "Test.123")
 		fakeEntity := fakers.UserFakerEntityRandom()
 
 		mockUserRepository.
@@ -84,7 +84,7 @@ func TestLookupService_Handle(t *testing.T) {
 	t.Run("Happy Path", func(t *testing.T) {
 		validEmail := "valid@email.local"
 		validPass := "Test.123"
-		cmd := domain.NewUserLookupCommand(validEmail, validPass)
+		cmd := command.NewUserLookupCommand(validEmail, validPass)
 		fakeEntity := fakers.UserFakerEntityRandom()
 		hashVO, err := valueobject.NewHashFromPlain(valueobject.NewPlainPassword(validPass))
 		assert.NoError(t, err)

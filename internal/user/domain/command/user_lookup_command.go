@@ -1,4 +1,4 @@
-package domain
+package command
 
 type UserLookupCommand struct {
 	email    string
