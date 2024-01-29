@@ -12,6 +12,9 @@ install-tools:
 	go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	go install github.com/rinchsan/gosimports/cmd/gosimports@latest
 
+test-unit:
+	go test -tags unit ./...
+
 # Create a new migration
 migrate-create:
 	migrate create -ext sql -dir ./migrations -seq ${MIG_NAME}
