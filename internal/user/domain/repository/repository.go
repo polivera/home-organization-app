@@ -3,10 +3,12 @@
 package repository
 
 import (
-	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
 	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
 )
 
 type UserRepository interface {
-	GetVerifiedUserByEmail(email valueobject.Email) (*entity.UserEntity, error)
+	GetVerifiedUserByEmail(email commonValueObject.Email) (*entity.UserEntity, error)
+	GetUserByEmail(email commonValueObject.Email) (*entity.UserEntity, error)
+	CreateUser(userEntity *entity.UserEntity) error
 }

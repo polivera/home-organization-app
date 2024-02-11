@@ -3,11 +3,11 @@ module github.com/polivera/home-organization-app
 go 1.21.6
 
 require (
-	github.com/go-faker/faker/v4 v4.2.0
+	github.com/go-faker/faker/v4 v4.2.1
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/mock v0.4.0
-	golang.org/x/crypto v0.18.0
+	golang.org/x/crypto v0.19.0
 )
 
 require (

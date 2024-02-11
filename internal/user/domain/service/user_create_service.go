@@ -1,9 +1,14 @@
 package service
 
 import (
+	"github.com/polivera/home-organization-app/internal/common"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
+	"github.com/polivera/home-organization-app/internal/user"
 	"github.com/polivera/home-organization-app/internal/user/domain"
 	"github.com/polivera/home-organization-app/internal/user/domain/command"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
+	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
 )
 
 type CreateUserService interface {
@@ -19,8 +24,46 @@ func NewCreateUserService(repo repository.UserRepository) CreateUserService {
 }
 
 func (cus *createUserService) Handle(command command.UserCreateCommand) (*domain.UserDTO, error) {
-	//email := valueobject.NewEmail(command.Email())
-	//password := valueobject.NewPlainPassword(command.Password())
+	email := commonValueObject.NewEmail(command.Email())
+	password := valueobject.NewPlainPassword(command.Password())
+	username := valueobject.NewUsername(command.Username())
 
-	return nil, nil
+	if !email.IsValid() {
+		return nil, common.ErrorValidation{Field: "email"}
+	}
+	if !password.IsValid() {
+		return nil, common.ErrorValidation{Field: "password"}
+	}
+	if !username.IsValid() {
+		return nil, common.ErrorValidation{Field: "username"}
+	}
+
+	existingUser, err := cus.userRepo.GetUserByEmail(email)
+	if err != nil {
+		return nil, common.RepositoryUnexpectedError{Message: err.Error()}
+	}
+	if existingUser != nil {
+		return nil, user.ErrorUserExist{Email: email.Value()}
+	}
+
+	hashPassword, err := valueobject.NewHashFromPlain(password)
+	if err != nil {
+		return nil, user.ErrorCantHashField{Field: "password"}
+	}
+
+	var userEntity entity.UserEntity
+	userEntity.Email = email.Value()
+	userEntity.Password = hashPassword.GetHash()
+	userEntity.Username = username.Value()
+	userEntity.Status = entity.StatusCreated
+	err = cus.userRepo.CreateUser(&userEntity)
+	if err != nil {
+		return nil, common.RepositoryUnexpectedError{Message: err.Error()}
+	}
+
+	return &domain.UserDTO{
+		Id:       userEntity.Id,
+		Email:    userEntity.Email,
+		Username: userEntity.Username,
+	}, nil
 }

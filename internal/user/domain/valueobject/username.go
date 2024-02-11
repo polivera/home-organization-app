@@ -1,5 +1,7 @@
 package valueobject
 
+import "regexp"
+
 type Username interface {
 	IsValid() bool
 	Value() string
@@ -15,8 +17,8 @@ func NewUsername(username string) Username {
 
 func (un *usernameVO) IsValid() bool {
 	valLen := len(un.value)
-	// todo: check that only has alpha-numeric chars
-	return valLen >= 8
+	return valLen >= 8 &&
+		regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString(un.value)
 }
 
 func (un *usernameVO) Value() string {
