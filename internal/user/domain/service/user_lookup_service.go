@@ -2,13 +2,15 @@ package service
 
 import (
 	"github.com/polivera/home-organization-app/internal/common"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
 	"github.com/polivera/home-organization-app/internal/user/domain"
+	"github.com/polivera/home-organization-app/internal/user/domain/command"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
 	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 )
 
 type LookupService interface {
-	Handle(command domain.UserLookupCommand) (*domain.UserDTO, error)
+	Handle(command command.UserLookupCommand) (*domain.UserDTO, error)
 }
 
 type lookupService struct {
@@ -19,14 +21,13 @@ func NewLookupService(repo repository.UserRepository) LookupService {
 	return &lookupService{userRepo: repo}
 }
 
-func (ls *lookupService) Handle(command domain.UserLookupCommand) (*domain.UserDTO, error) {
-	email := valueobject.NewEmail(command.Email())
+func (ls *lookupService) Handle(command command.UserLookupCommand) (*domain.UserDTO, error) {
+	email := commonValueObject.NewEmail(command.Email())
 	password := valueobject.NewPlainPassword(command.Password())
 
 	if !email.IsValid() {
 		return nil, common.ErrorValidation{Field: "email"}
 	}
-
 	if !password.IsValid() {
 		return nil, common.ErrorValidation{Field: "password"}
 	}

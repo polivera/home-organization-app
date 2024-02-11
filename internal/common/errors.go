@@ -17,3 +17,11 @@ type ErrorValidation struct {
 func (e ErrorValidation) Error() string {
 	return fmt.Sprintf("%s is not valid", e.Field)
 }
+
+type RepositoryUnexpectedError struct {
+	Message string
+}
+
+func (rue RepositoryUnexpectedError) Error() string {
+	return fmt.Sprintf("Unexpected repository error: %s", rue.Message)
+}

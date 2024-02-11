@@ -11,4 +11,5 @@ type Connection interface {
 	Close() error
 	Query(query string, args ...interface{}) (*sql.Rows, error)
 	QueryRow(query string, args ...interface{}) *sql.Row
+	Execute(query string, args ...interface{}) (sql.Result, error)
 }

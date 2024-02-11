@@ -1,16 +1,18 @@
-package service
+package service_test
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/polivera/home-organization-app/internal/common"
-	"github.com/polivera/home-organization-app/internal/user/domain"
+	"github.com/polivera/home-organization-app/internal/user/domain/command"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
+	"github.com/polivera/home-organization-app/internal/user/domain/service"
 	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
+	commonMatchers "github.com/polivera/home-organization-app/test/common"
 	"github.com/polivera/home-organization-app/test/user/fakers"
-	"github.com/polivera/home-organization-app/test/user/matchers"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestLookupService_Handle(t *testing.T) {
@@ -18,10 +20,10 @@ func TestLookupService_Handle(t *testing.T) {
 	mockUserRepository := repository.NewMockUserRepository(ctrl)
 
 	t.Run("Email not valid", func(t *testing.T) {
-		cmd := domain.NewUserLookupCommand("wrongemail", "Test.123")
-		service := NewLookupService(mockUserRepository)
+		cmd := command.NewUserLookupCommand("wrongemail", "Test.123")
+		lookupService := service.NewLookupService(mockUserRepository)
 
-		dto, err := service.Handle(cmd)
+		dto, err := lookupService.Handle(cmd)
 		assert.Nil(t, dto)
 		assert.Error(t, err)
 
@@ -31,10 +33,10 @@ func TestLookupService_Handle(t *testing.T) {
 
 	t.Run("Password not valid", func(t *testing.T) {
 
-		cmd := domain.NewUserLookupCommand("valid@emial.local", "wrongpass")
-		service := NewLookupService(mockUserRepository)
+		cmd := command.NewUserLookupCommand("valid@emial.local", "wrongpass")
+		lookupService := service.NewLookupService(mockUserRepository)
 
-		dto, err := service.Handle(cmd)
+		dto, err := lookupService.Handle(cmd)
 		assert.Nil(t, dto)
 		assert.Error(t, err)
 
@@ -44,16 +46,16 @@ func TestLookupService_Handle(t *testing.T) {
 
 	t.Run("Fail to retrieve user", func(t *testing.T) {
 		validEmail := "valid@email.local"
-		cmd := domain.NewUserLookupCommand(validEmail, "Test.123")
+		cmd := command.NewUserLookupCommand(validEmail, "Test.123")
 
 		mockUserRepository.
 			EXPECT().
-			GetVerifiedUserByEmail(matchers.EmailMatcher(validEmail)).
+			GetVerifiedUserByEmail(commonMatchers.EmailMatcher(validEmail)).
 			Times(1).
 			Return(nil, errors.New("db error"))
 
-		service := NewLookupService(mockUserRepository)
-		dto, err := service.Handle(cmd)
+		lookupService := service.NewLookupService(mockUserRepository)
+		dto, err := lookupService.Handle(cmd)
 		assert.Nil(t, dto)
 		assert.Error(t, err)
 
@@ -63,17 +65,17 @@ func TestLookupService_Handle(t *testing.T) {
 
 	t.Run("Fail to retrieve user", func(t *testing.T) {
 		validEmail := "valid@email.local"
-		cmd := domain.NewUserLookupCommand(validEmail, "Test.123")
-		fakeEntity := fakers.UserFakerEntityRandom()
+		cmd := command.NewUserLookupCommand(validEmail, "Test.123")
+		fakeEntity := fakers.UserEntityFakerRandom()
 
 		mockUserRepository.
 			EXPECT().
-			GetVerifiedUserByEmail(matchers.EmailMatcher(validEmail)).
+			GetVerifiedUserByEmail(commonMatchers.EmailMatcher(validEmail)).
 			Times(1).
 			Return(&fakeEntity, nil)
 
-		service := NewLookupService(mockUserRepository)
-		dto, err := service.Handle(cmd)
+		lookupService := service.NewLookupService(mockUserRepository)
+		dto, err := lookupService.Handle(cmd)
 		assert.Nil(t, dto)
 		assert.Error(t, err)
 
@@ -84,20 +86,20 @@ func TestLookupService_Handle(t *testing.T) {
 	t.Run("Happy Path", func(t *testing.T) {
 		validEmail := "valid@email.local"
 		validPass := "Test.123"
-		cmd := domain.NewUserLookupCommand(validEmail, validPass)
-		fakeEntity := fakers.UserFakerEntityRandom()
+		cmd := command.NewUserLookupCommand(validEmail, validPass)
+		fakeEntity := fakers.UserEntityFakerRandom()
 		hashVO, err := valueobject.NewHashFromPlain(valueobject.NewPlainPassword(validPass))
 		assert.NoError(t, err)
 
 		fakeEntity.Password = hashVO.GetHash()
 		mockUserRepository.
 			EXPECT().
-			GetVerifiedUserByEmail(matchers.EmailMatcher(validEmail)).
+			GetVerifiedUserByEmail(commonMatchers.EmailMatcher(validEmail)).
 			Times(1).
 			Return(&fakeEntity, nil)
 
-		service := NewLookupService(mockUserRepository)
-		dto, err := service.Handle(cmd)
+		lookupService := service.NewLookupService(mockUserRepository)
+		dto, err := lookupService.Handle(cmd)
 		assert.NoError(t, err)
 		assert.Equal(t, fakeEntity.Email, dto.Email)
 		assert.Equal(t, fakeEntity.Username, dto.Username)

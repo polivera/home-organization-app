@@ -44,6 +44,10 @@ func (mdb *mysqlDB) QueryRow(query string, args ...interface{}) *sql.Row {
 	return mdb.db.QueryRowContext(mdb.ctx, query, args...)
 }
 
+func (mdb *mysqlDB) Execute(query string, args ...interface{}) (sql.Result, error) {
+	return mdb.db.ExecContext(mdb.ctx, query, args...)
+}
+
 func (mdb *mysqlDB) Close() error {
 	return mdb.db.Close()
 }
