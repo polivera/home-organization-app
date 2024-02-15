@@ -16,7 +16,7 @@ func EmailMatcher(email string) gomock.Matcher {
 }
 
 func (em emailMatcher) Matches(param interface{}) bool {
-	if reflect.TypeOf(param).String() != "*valueobject.emailVO" {
+	if reflect.TypeOf(param).String() != "valueobject.emailVO" {
 		return false
 	}
 	emailVO, ok := param.(commonValueObject.Email)
