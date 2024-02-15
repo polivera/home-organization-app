@@ -91,7 +91,7 @@ func TestLookupService_Handle(t *testing.T) {
 		hashVO, err := valueobject.NewHashFromPlain(valueobject.NewPlainPassword(validPass))
 		assert.NoError(t, err)
 
-		fakeEntity.Password = hashVO.GetHash()
+		fakeEntity.Password = hashVO.Value()
 		mockUserRepository.
 			EXPECT().
 			GetVerifiedUserByEmail(commonMatchers.EmailMatcher(validEmail)).

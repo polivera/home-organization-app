@@ -38,7 +38,7 @@ func (ls *lookupService) Handle(command command.UserLookupCommand) (*domain.User
 	}
 
 	hashPass := valueobject.NewHashPassword(entity.Password)
-	if !hashPass.IsPasswordValid(password) {
+	if !hashPass.MatchPlain(password) {
 		return nil, common.ErrorNotFound{Item: email.Value()}
 	}
 

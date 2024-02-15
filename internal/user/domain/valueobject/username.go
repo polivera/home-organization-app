@@ -1,10 +1,13 @@
 package valueobject
 
-import "regexp"
+import (
+	"regexp"
+
+	"github.com/polivera/home-organization-app/internal/common/valueobject"
+)
 
 type Username interface {
-	IsValid() bool
-	Value() string
+	valueobject.ValueObject[string]
 }
 
 type usernameVO struct {
@@ -12,15 +15,15 @@ type usernameVO struct {
 }
 
 func NewUsername(username string) Username {
-	return &usernameVO{value: username}
+	return usernameVO{value: username}
 }
 
-func (un *usernameVO) IsValid() bool {
+func (un usernameVO) IsValid() bool {
 	valLen := len(un.value)
 	return valLen >= 8 &&
 		regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString(un.value)
 }
 
-func (un *usernameVO) Value() string {
+func (un usernameVO) Value() string {
 	return un.value
 }

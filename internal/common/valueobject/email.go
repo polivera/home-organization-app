@@ -20,13 +20,13 @@ type emailVO struct {
 }
 
 func NewEmail(email string) Email {
-	return &emailVO{value: email}
+	return emailVO{value: email}
 }
 
-func (em *emailVO) IsValid() bool {
+func (em emailVO) IsValid() bool {
 	return emailRegex.MatchString(strings.ToLower(em.value))
 }
 
-func (em *emailVO) Value() string {
+func (em emailVO) Value() string {
 	return em.value
 }

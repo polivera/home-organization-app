@@ -15,31 +15,31 @@ func TestHashPassword(t *testing.T) {
 
 	t.Run("Test hash from plain password", func(t *testing.T) {
 		t.Run("Get hashed password", func(t *testing.T) {
-			assert.NotEmpty(t, hashed.GetHash())
+			assert.NotEmpty(t, hashed.Value())
 		})
 
 		t.Run("Check valid password", func(t *testing.T) {
-			assert.True(t, hashed.IsPasswordValid(plainPassword))
+			assert.True(t, hashed.MatchPlain(plainPassword))
 		})
 
 		t.Run("Check for invalid password", func(t *testing.T) {
-			assert.False(t, hashed.IsPasswordValid(NewPlainPassword("InvalidPassword")))
+			assert.False(t, hashed.MatchPlain(NewPlainPassword("InvalidPassword")))
 		})
 	})
 
 	t.Run("Test from hashed password", func(t *testing.T) {
-		fromHash := NewHashPassword(hashed.GetHash())
+		fromHash := NewHashPassword(hashed.Value())
 
 		t.Run("Test get hash password", func(t *testing.T) {
-			assert.Equal(t, hashed.GetHash(), fromHash.GetHash())
+			assert.Equal(t, hashed.Value(), fromHash.Value())
 		})
 
 		t.Run("Check valid password", func(t *testing.T) {
-			assert.True(t, fromHash.IsPasswordValid(plainPassword))
+			assert.True(t, fromHash.MatchPlain(plainPassword))
 		})
 
 		t.Run("Check from invalid password", func(t *testing.T) {
-			assert.False(t, fromHash.IsPasswordValid(NewPlainPassword("InvalidPassword")))
+			assert.False(t, fromHash.MatchPlain(NewPlainPassword("InvalidPassword")))
 		})
 	})
 }

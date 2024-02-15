@@ -16,6 +16,10 @@ install-tools:
 generate:
 	go generate ./...
 
+format:
+	gofmt -w cmd internal pkg
+	gosimports -w cmd internal pkg
+
 test-unit:
 	go test -tags unit ./...
 

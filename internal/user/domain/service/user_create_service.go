@@ -53,7 +53,7 @@ func (cus *createUserService) Handle(command command.UserCreateCommand) (*domain
 
 	var userEntity entity.UserEntity
 	userEntity.Email = email.Value()
-	userEntity.Password = hashPassword.GetHash()
+	userEntity.Password = hashPassword.Value()
 	userEntity.Username = username.Value()
 	userEntity.Status = entity.StatusCreated
 	err = cus.userRepo.CreateUser(&userEntity)
