@@ -19,7 +19,7 @@ func TestPlainPassword(t *testing.T) {
 		for _, pass := range validPassList {
 			plainPass := NewPlainPassword(pass)
 			assert.True(t, plainPass.IsValid())
-			assert.Equal(t, pass, plainPass.GetValue())
+			assert.Equal(t, pass, plainPass.Value())
 		}
 	})
 	t.Run("Check password is invalid", func(t *testing.T) {

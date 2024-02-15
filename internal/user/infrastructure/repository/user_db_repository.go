@@ -101,5 +101,5 @@ func (userRepo *userRepository) CreateUser(user *entity.UserEntity) error {
 	insertedId, err := result.LastInsertId()
 	user.Id = uint64(insertedId)
 
-	return nil
+	return err
 }
