@@ -1,8 +1,9 @@
 package valueobject
 
 import (
-	"github.com/polivera/home-organization-app/internal/common/valueobject"
 	"regexp"
+
+	"github.com/polivera/home-organization-app/internal/common/valueobject"
 )
 
 type Username interface {
