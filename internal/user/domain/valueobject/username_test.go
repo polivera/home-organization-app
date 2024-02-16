@@ -1,6 +1,9 @@
-package valueobject
+//go:build unit
+
+package valueobject_test
 
 import (
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,7 +11,7 @@ import (
 
 func TestUsernameVO(t *testing.T) {
 	t.Run("Check get value", func(t *testing.T) {
-		username := NewUsername("testUsername")
+		username := valueobject.NewUsername("testUsername")
 		assert.Equal(t, "testUsername", username.Value())
 	})
 
@@ -21,12 +24,12 @@ func TestUsernameVO(t *testing.T) {
 		}
 
 		for _, validUsername := range validUsernameList {
-			uName := NewUsername(validUsername)
+			uName := valueobject.NewUsername(validUsername)
 			assert.True(t, uName.IsValid(), validUsername+" should be valid")
 		}
 
 		for _, invalidUsername := range invalidUsernameList {
-			uName := NewUsername(invalidUsername)
+			uName := valueobject.NewUsername(invalidUsername)
 			assert.False(t, uName.IsValid(), invalidUsername+" should be invalid")
 		}
 	})

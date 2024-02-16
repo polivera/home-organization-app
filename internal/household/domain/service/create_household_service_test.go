@@ -1,9 +1,12 @@
-package service
+//go:build unit
+
+package service_test
 
 import (
 	"errors"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	"github.com/polivera/home-organization-app/internal/household/domain/repository"
+	"github.com/polivera/home-organization-app/internal/household/domain/service"
 	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 	commonMatchers "github.com/polivera/home-organization-app/test/common/matchers"
 	"github.com/polivera/home-organization-app/test/household/fakers"
@@ -19,14 +22,14 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 
 	t.Run("fail if household is invalid", func(t *testing.T) {
 		cmd := command.NewCreateHouseholdCommand("", 10)
-		handle := NewCreateHouseholdService(householdRepo)
+		handle := service.NewCreateHouseholdService(householdRepo)
 		_, err := handle.Handle(cmd)
 		assert.EqualError(t, err, "household name is not valid")
 	})
 
 	t.Run("fail if owner is invalid", func(t *testing.T) {
 		cmd := command.NewCreateHouseholdCommand("household", 0)
-		handle := NewCreateHouseholdService(householdRepo)
+		handle := service.NewCreateHouseholdService(householdRepo)
 		_, err := handle.Handle(cmd)
 		assert.EqualError(t, err, "owner is not valid")
 	})
@@ -36,7 +39,7 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 		householdRepo.EXPECT().
 			GetUserHouseholdByName(matchers.HouseholdMatcher("household"), commonMatchers.IDMatcher(1)).
 			Return(nil, errors.New("some-mock-error"))
-		handle := NewCreateHouseholdService(householdRepo)
+		handle := service.NewCreateHouseholdService(householdRepo)
 		_, err := handle.Handle(cmd)
 		assert.EqualError(t, err, "Unexpected repository error: some-mock-error")
 	})
@@ -47,7 +50,7 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 		householdRepo.EXPECT().
 			GetUserHouseholdByName(matchers.HouseholdMatcher("THE HOLD"), commonMatchers.IDMatcher(25)).
 			Return(&householdEntity, nil)
-		handle := NewCreateHouseholdService(householdRepo)
+		handle := service.NewCreateHouseholdService(householdRepo)
 		_, err := handle.Handle(cmd)
 		assert.EqualError(t, err, "Household named THE HOLD already exist for user 25")
 	})
@@ -63,7 +66,7 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 			Times(1).
 			Return(errors.New("another-mock-error"))
 
-		handle := NewCreateHouseholdService(householdRepo)
+		handle := service.NewCreateHouseholdService(householdRepo)
 		_, err := handle.Handle(cmd)
 		assert.EqualError(t, err, "Unexpected repository error: another-mock-error")
 	})
@@ -82,7 +85,7 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 				return nil
 			})
 
-		handle := NewCreateHouseholdService(householdRepo)
+		handle := service.NewCreateHouseholdService(householdRepo)
 		householdDTO, err := handle.Handle(cmd)
 		expectedEntity := entity.HouseholdEntity{
 			Id:    123,

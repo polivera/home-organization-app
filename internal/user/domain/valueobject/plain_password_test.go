@@ -1,8 +1,9 @@
 //go:build unit
 
-package valueobject
+package valueobject_test
 
 import (
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -17,7 +18,7 @@ func TestPlainPassword(t *testing.T) {
 			"Ts1!@$%^&*()-=_+,./<>?;':\"[]{}",
 		}
 		for _, pass := range validPassList {
-			plainPass := NewPlainPassword(pass)
+			plainPass := valueobject.NewPlainPassword(pass)
 			assert.True(t, plainPass.IsValid())
 			assert.Equal(t, pass, plainPass.Value())
 		}
@@ -30,7 +31,7 @@ func TestPlainPassword(t *testing.T) {
 			"T1!@$%^&*()-=_+,./<>?;':\"[]{}",
 		}
 		for _, pass := range validPassList {
-			plainPass := NewPlainPassword(pass)
+			plainPass := valueobject.NewPlainPassword(pass)
 			assert.False(t, plainPass.IsValid())
 		}
 	})

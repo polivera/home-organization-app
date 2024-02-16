@@ -28,3 +28,6 @@ go.work
 
 # Ignore mock files
 mock*
+
+# Code coverage file
+coverage.html
