@@ -43,10 +43,10 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 
 	t.Run("fail if household exist for user", func(t *testing.T) {
 		cmd := command.NewCreateHouseholdCommand("THE HOLD", 25)
-		entity := fakers.HouseholdEntityFakerRandom()
+		householdEntity := fakers.HouseholdEntityFakerRandom()
 		householdRepo.EXPECT().
 			GetUserHouseholdByName(matchers.HouseholdMatcher("THE HOLD"), commonMatchers.IDMatcher(25)).
-			Return(&entity, nil)
+			Return(&householdEntity, nil)
 		handle := NewCreateHouseholdService(householdRepo)
 		_, err := handle.Handle(cmd)
 		assert.EqualError(t, err, "Household named THE HOLD already exist for user 25")
