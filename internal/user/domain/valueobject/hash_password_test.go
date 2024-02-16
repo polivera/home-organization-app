@@ -1,16 +1,17 @@
 //go:build unit
 
-package valueobject
+package valueobject_test
 
 import (
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestHashPassword(t *testing.T) {
-	plainPassword := NewPlainPassword("Test.123")
-	hashed, err := NewHashFromPlain(plainPassword)
+	plainPassword := valueobject.NewPlainPassword("Test.123")
+	hashed, err := valueobject.NewHashFromPlain(plainPassword)
 	assert.NoError(t, err)
 
 	t.Run("Test hash from plain password", func(t *testing.T) {
@@ -23,12 +24,12 @@ func TestHashPassword(t *testing.T) {
 		})
 
 		t.Run("Check for invalid password", func(t *testing.T) {
-			assert.False(t, hashed.MatchPlain(NewPlainPassword("InvalidPassword")))
+			assert.False(t, hashed.MatchPlain(valueobject.NewPlainPassword("InvalidPassword")))
 		})
 	})
 
 	t.Run("Test from hashed password", func(t *testing.T) {
-		fromHash := NewHashPassword(hashed.Value())
+		fromHash := valueobject.NewHashPassword(hashed.Value())
 
 		t.Run("Test get hash password", func(t *testing.T) {
 			assert.Equal(t, hashed.Value(), fromHash.Value())
@@ -39,7 +40,7 @@ func TestHashPassword(t *testing.T) {
 		})
 
 		t.Run("Check from invalid password", func(t *testing.T) {
-			assert.False(t, fromHash.MatchPlain(NewPlainPassword("InvalidPassword")))
+			assert.False(t, fromHash.MatchPlain(valueobject.NewPlainPassword("InvalidPassword")))
 		})
 	})
 }

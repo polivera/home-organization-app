@@ -1,3 +1,5 @@
+//go:build unit
+
 package service_test
 
 import (
@@ -7,7 +9,7 @@ import (
 	"github.com/polivera/home-organization-app/internal/user/domain/command"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
 	"github.com/polivera/home-organization-app/internal/user/domain/service"
-	commonMatchers "github.com/polivera/home-organization-app/test/common"
+	commonMatchers "github.com/polivera/home-organization-app/test/common/matchers"
 	"github.com/polivera/home-organization-app/test/user/fakers"
 	"github.com/polivera/home-organization-app/test/user/matchers"
 	"github.com/stretchr/testify/assert"
