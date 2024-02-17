@@ -18,7 +18,7 @@ func NewUserRepository(db database.Connection) repository.UserRepository {
 	return &userRepository{dbConn: db}
 }
 
-func (userRepo *userRepository) GetVerifiedUserByEmail(email commonValueObject.Email) (*entity.UserEntity, error) {
+func (userRepo *userRepository) GetVerifiedUserByEmail(email commonValueObject.EmailVO) (*entity.UserEntity, error) {
 	var err error
 	result := userRepo.dbConn.QueryRow(
 		`
@@ -50,7 +50,41 @@ func (userRepo *userRepository) GetVerifiedUserByEmail(email commonValueObject.E
 	return &userEntity, nil
 }
 
-func (userRepo *userRepository) GetUserByEmail(email commonValueObject.Email) (*entity.UserEntity, error) {
+func (userRepo *userRepository) GetUserByID(id commonValueObject.IDVO) (*entity.UserEntity, error) {
+	var err error
+	result := userRepo.dbConn.QueryRow(
+		`
+			SELECT u.id, u.email, u.password, u.username, u.session_token, u.status 
+			FROM users u 
+			WHERE id = ?
+		`,
+		id.Value(),
+	)
+
+	var userEntity entity.UserEntity
+	var nullableSessionToken *string
+	if err = result.Scan(
+		&userEntity.Id,
+		&userEntity.Email,
+		&userEntity.Password,
+		&userEntity.Username,
+		&nullableSessionToken,
+		&userEntity.Status,
+	); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	if nullableSessionToken != nil {
+		userEntity.SessionToken = *nullableSessionToken
+	}
+
+	return &userEntity, nil
+}
+
+func (userRepo *userRepository) GetUserByEmail(email commonValueObject.EmailVO) (*entity.UserEntity, error) {
 	var err error
 	result := userRepo.dbConn.QueryRow(
 		`

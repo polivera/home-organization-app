@@ -16,10 +16,10 @@ func IDMatcher(id uint64) gomock.Matcher {
 }
 
 func (em idMatcher) Matches(param interface{}) bool {
-	if reflect.TypeOf(param).String() != "valueobject.IDVO" {
+	if reflect.TypeOf(param).String() != "valueobject.idVO" {
 		return false
 	}
-	idVO, ok := param.(commonValueObject.ID)
+	idVO, ok := param.(commonValueObject.IDVO)
 	if !ok {
 		return false
 	}

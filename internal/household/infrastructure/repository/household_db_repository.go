@@ -36,8 +36,8 @@ func (h householdRepository) CreateHousehold(householdEntity *entity.HouseholdEn
 }
 
 func (h householdRepository) GetUserHouseholdByName(
-	name valueobject.HouseholdName,
-	owner commonValueObject.ID,
+	name valueobject.HouseholdNameVO,
+	owner commonValueObject.IDVO,
 ) (*entity.HouseholdEntity, error) {
 	result := h.dbConn.QueryRow(
 		`
@@ -47,6 +47,29 @@ func (h householdRepository) GetUserHouseholdByName(
 		`,
 		name.Value(),
 		owner.Value(),
+	)
+	var householdEntity entity.HouseholdEntity
+	if err := result.Scan(
+		&householdEntity.Id,
+		&householdEntity.Name,
+		&householdEntity.Owner,
+	); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &householdEntity, nil
+}
+
+func (h householdRepository) GetHouseholdByID(id commonValueObject.IDVO) (*entity.HouseholdEntity, error) {
+	result := h.dbConn.QueryRow(
+		`
+		SELECT h.id, h.name, h.owner 
+		FROM households h 
+		WHERE h.id = ?
+		`,
+		id.Value(),
 	)
 	var householdEntity entity.HouseholdEntity
 	if err := result.Scan(

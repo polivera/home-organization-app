@@ -11,15 +11,14 @@ import (
 	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
 )
 
-type CreateUserService interface {
-	Handle(command command.UserCreateCommand) (*domain.UserDTO, error)
-}
-
 type createUserService struct {
 	userRepo repository.UserRepository
 }
 
-func NewCreateUserService(repo repository.UserRepository) CreateUserService {
+func NewCreateUserService(repo repository.UserRepository) common.DomainService[
+	command.UserCreateCommand,
+	domain.UserDTO,
+] {
 	return &createUserService{userRepo: repo}
 }
 

@@ -5,8 +5,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type HashPassword interface {
-	valueobject.ValueObject[string]
+type HashPasswordVO interface {
+	valueobject.ValueObject[string, HashPasswordVO]
 	MatchPlain(passVO PlainPassword) bool
 }
 
@@ -15,14 +15,14 @@ type hashPassword struct {
 	cost int
 }
 
-func NewHashFromPlain(plainPassword PlainPassword) (HashPassword, error) {
+func NewHashFromPlain(plainPassword PlainPassword) (HashPasswordVO, error) {
 	var err error
 	hashPass := &hashPassword{cost: 12}
 	hashPass.hash, err = hashPass.buildHash(plainPassword.Value())
 	return hashPass, err
 }
 
-func NewHashPassword(hashedPass string) HashPassword {
+func NewHashPassword(hashedPass string) HashPasswordVO {
 	return hashPassword{hash: hashedPass}
 }
 
@@ -42,4 +42,12 @@ func (hp hashPassword) MatchPlain(passVO PlainPassword) bool {
 func (hp hashPassword) buildHash(plainPassword string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(plainPassword), hp.cost)
 	return string(bytes), err
+}
+
+func (hp hashPassword) IsEqual(vo HashPasswordVO) bool {
+	return hp.hash == vo.Value()
+}
+
+func (hp hashPassword) String() string {
+	return "hashed password"
 }

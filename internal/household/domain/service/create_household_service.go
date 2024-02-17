@@ -11,15 +11,14 @@ import (
 	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 )
 
-type CreateHouseholdService interface {
-	Handle(command command.CreateHouseholdCommand) (*domain.HouseholdDTO, error)
-}
-
 type createHouseholdService struct {
 	householdRepo repository.HouseholdRepository
 }
 
-func NewCreateHouseholdService(repo repository.HouseholdRepository) CreateHouseholdService {
+func NewCreateHouseholdService(repo repository.HouseholdRepository) common.DomainService[
+	command.CreateHouseholdCommand,
+	domain.HouseholdDTO,
+] {
 	return &createHouseholdService{
 		householdRepo: repo,
 	}

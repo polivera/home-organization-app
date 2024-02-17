@@ -11,7 +11,8 @@ import (
 type HouseholdRepository interface {
 	CreateHousehold(householdEntity *entity.HouseholdEntity) error
 	GetUserHouseholdByName(
-		name valueobject.HouseholdName,
-		owner commonValueObject.ID,
+		name valueobject.HouseholdNameVO,
+		owner commonValueObject.IDVO,
 	) (*entity.HouseholdEntity, error)
+	GetHouseholdByID(id commonValueObject.IDVO) (*entity.HouseholdEntity, error)
 }

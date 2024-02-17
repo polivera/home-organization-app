@@ -1,20 +1,18 @@
 package valueobject
 
 import (
-	"regexp"
-
+	"fmt"
 	"github.com/polivera/home-organization-app/internal/common/valueobject"
+	"regexp"
 )
 
-type Username interface {
-	valueobject.ValueObject[string]
-}
+type UsernameVO valueobject.ValueObject[string, UsernameVO]
 
 type usernameVO struct {
 	value string
 }
 
-func NewUsername(username string) Username {
+func NewUsername(username string) UsernameVO {
 	return usernameVO{value: username}
 }
 
@@ -26,4 +24,12 @@ func (un usernameVO) IsValid() bool {
 
 func (un usernameVO) Value() string {
 	return un.value
+}
+
+func (un usernameVO) IsEqual(vo UsernameVO) bool {
+	return un.value == vo.Value()
+}
+
+func (un usernameVO) String() string {
+	return fmt.Sprintf("username: %s", un.value)
 }
