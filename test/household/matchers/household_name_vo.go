@@ -19,7 +19,7 @@ func (em houseHoldMatcher) Matches(param interface{}) bool {
 	if reflect.TypeOf(param).String() != "valueobject.householdName" {
 		return false
 	}
-	householdNameVO, ok := param.(valueobject.HouseholdName)
+	householdNameVO, ok := param.(valueobject.HouseholdNameVO)
 	if !ok {
 		return false
 	}

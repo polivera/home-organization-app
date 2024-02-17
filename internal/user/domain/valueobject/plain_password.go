@@ -5,13 +5,11 @@ import (
 	"github.com/polivera/home-organization-app/pkg/utils"
 )
 
-type PlainPassword interface {
-	valueobject.ValueObject[string]
-}
-
 type password struct {
 	value string
 }
+
+type PlainPassword valueobject.ValueObject[string, PlainPassword]
 
 func NewPlainPassword(plainPassword string) PlainPassword {
 	return password{value: plainPassword}
@@ -27,4 +25,12 @@ func (pass password) IsValid() bool {
 
 func (pass password) Value() string {
 	return pass.value
+}
+
+func (pass password) IsEqual(vo PlainPassword) bool {
+	return pass.value == vo.Value()
+}
+
+func (pass password) String() string {
+	return "********"
 }

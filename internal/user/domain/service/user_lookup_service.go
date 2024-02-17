@@ -17,7 +17,10 @@ type lookupService struct {
 	userRepo repository.UserRepository
 }
 
-func NewLookupService(repo repository.UserRepository) LookupService {
+func NewLookupService(repo repository.UserRepository) common.DomainService[
+	command.UserLookupCommand,
+	domain.UserDTO,
+] {
 	return &lookupService{userRepo: repo}
 }
 

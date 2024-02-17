@@ -8,7 +8,8 @@ import (
 )
 
 type UserRepository interface {
-	GetVerifiedUserByEmail(email commonValueObject.Email) (*entity.UserEntity, error)
-	GetUserByEmail(email commonValueObject.Email) (*entity.UserEntity, error)
+	GetVerifiedUserByEmail(email commonValueObject.EmailVO) (*entity.UserEntity, error)
+	GetUserByEmail(email commonValueObject.EmailVO) (*entity.UserEntity, error)
 	CreateUser(userEntity *entity.UserEntity) error
+	GetUserByID(id commonValueObject.IDVO) (*entity.UserEntity, error)
 }

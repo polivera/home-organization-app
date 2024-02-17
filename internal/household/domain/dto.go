@@ -1,7 +1,8 @@
 package domain
 
 type HouseholdDTO struct {
-	Id    uint64
-	Name  string
-	Owner uint64
+	Id           uint64
+	Name         string
+	Owner        uint64
+	Participants []uint64
 }
