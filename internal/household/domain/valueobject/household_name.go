@@ -2,7 +2,7 @@ package valueobject
 
 import (
 	"fmt"
-	"github.com/polivera/home-organization-app/internal/common/valueobject"
+	"github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 )
 
 type HouseholdNameVO valueobject.ValueObject[string, HouseholdNameVO]

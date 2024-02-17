@@ -11,11 +11,20 @@ func (e ErrorNotFound) Error() string {
 }
 
 type ErrorValidation struct {
-	Field string
+	Field   string
+	Message string
 }
 
 func (e ErrorValidation) Error() string {
 	return fmt.Sprintf("%s is not valid", e.Field)
+}
+
+type RepositoryError struct {
+	Message string
+}
+
+func (rue RepositoryError) Error() string {
+	return fmt.Sprintf("Repository error: %s", rue.Message)
 }
 
 type RepositoryUnexpectedError struct {

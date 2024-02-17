@@ -3,12 +3,12 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
-	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
 	"github.com/polivera/home-organization-app/internal/household/domain/repository"
 	"github.com/polivera/home-organization-app/internal/household/domain/valueobject"
-	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 )
 
 type householdRepository struct {
@@ -19,7 +19,7 @@ func NewHouseholdRepository(db database.Connection) repository.HouseholdReposito
 	return &householdRepository{dbConn: db}
 }
 
-func (h householdRepository) CreateHousehold(householdEntity *entity.HouseholdEntity) error {
+func (h householdRepository) CreateHousehold(householdEntity *entity.Household) error {
 	result, err := h.dbConn.Execute(
 		`
 		INSERT INTO households (name, owner) VALUES (?, ?);
@@ -38,7 +38,7 @@ func (h householdRepository) CreateHousehold(householdEntity *entity.HouseholdEn
 func (h householdRepository) GetUserHouseholdByName(
 	name valueobject.HouseholdNameVO,
 	owner commonValueObject.IDVO,
-) (*entity.HouseholdEntity, error) {
+) (*entity.Household, error) {
 	result := h.dbConn.QueryRow(
 		`
 		SELECT h.id, h.name, h.owner 
@@ -48,7 +48,7 @@ func (h householdRepository) GetUserHouseholdByName(
 		name.Value(),
 		owner.Value(),
 	)
-	var householdEntity entity.HouseholdEntity
+	var householdEntity entity.Household
 	if err := result.Scan(
 		&householdEntity.Id,
 		&householdEntity.Name,
@@ -62,7 +62,7 @@ func (h householdRepository) GetUserHouseholdByName(
 	return &householdEntity, nil
 }
 
-func (h householdRepository) GetHouseholdByID(id commonValueObject.IDVO) (*entity.HouseholdEntity, error) {
+func (h householdRepository) GetHouseholdByID(id commonValueObject.IDVO) (*entity.Household, error) {
 	result := h.dbConn.QueryRow(
 		`
 		SELECT h.id, h.name, h.owner 
@@ -71,7 +71,7 @@ func (h householdRepository) GetHouseholdByID(id commonValueObject.IDVO) (*entit
 		`,
 		id.Value(),
 	)
-	var householdEntity entity.HouseholdEntity
+	var householdEntity entity.Household
 	if err := result.Scan(
 		&householdEntity.Id,
 		&householdEntity.Name,

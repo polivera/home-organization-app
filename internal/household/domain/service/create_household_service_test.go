@@ -80,14 +80,14 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 		householdRepo.EXPECT().
 			CreateHousehold(matchers.NewHouseholdEntityMatcher(0, "THE HOLD", 25)).
 			Times(1).
-			DoAndReturn(func(hhEntity *entity.HouseholdEntity) error {
+			DoAndReturn(func(hhEntity *entity.Household) error {
 				hhEntity.Id = 123
 				return nil
 			})
 
 		handle := service.NewCreateHouseholdService(householdRepo)
 		householdDTO, err := handle.Handle(cmd)
-		expectedEntity := entity.HouseholdEntity{
+		expectedEntity := entity.Household{
 			Id:    123,
 			Name:  "THE HOLD",
 			Owner: 25,

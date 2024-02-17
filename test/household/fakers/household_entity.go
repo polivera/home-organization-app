@@ -5,8 +5,8 @@ import (
 	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 )
 
-func HouseholdEntityFakerRandom() entity.HouseholdEntity {
-	return entity.HouseholdEntity{
+func HouseholdEntityFakerRandom() entity.Household {
+	return entity.Household{
 		Id:    uint64(faker.RandomUnixTime()),
 		Name:  faker.Name(),
 		Owner: uint64(faker.RandomUnixTime()),

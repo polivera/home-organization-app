@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"errors"
 
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
-	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
 	"github.com/polivera/home-organization-app/internal/user/domain/repository"
 	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
 )
