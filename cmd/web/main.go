@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	"github.com/polivera/home-organization-app/internal/household/domain/service"

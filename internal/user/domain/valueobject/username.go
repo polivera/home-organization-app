@@ -2,8 +2,9 @@ package valueobject
 
 import (
 	"fmt"
-	"github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"regexp"
+
+	"github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 )
 
 type UsernameVO valueobject.ValueObject[string, UsernameVO]

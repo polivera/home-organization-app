@@ -2,13 +2,14 @@ package service
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	householdRepoPkg "github.com/polivera/home-organization-app/internal/household/domain/repository"
 	"github.com/polivera/home-organization-app/test/common/matchers"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestAddHouseholdUserService_Handle(t *testing.T) {

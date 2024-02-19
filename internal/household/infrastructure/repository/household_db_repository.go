@@ -3,12 +3,12 @@ package repository
 import (
 	"database/sql"
 	"errors"
-	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 
 	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/household/domain/repository"
 	"github.com/polivera/home-organization-app/internal/household/domain/valueobject"
+	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 )
 
 type householdRepository struct {
@@ -16,7 +16,7 @@ type householdRepository struct {
 }
 
 func NewHouseholdRepository(db database.Connection) repository.HouseholdRepository {
-	return &householdRepository{dbConn: db}
+	return householdRepository{dbConn: db}
 }
 
 func (h householdRepository) CreateHousehold(householdEntity *entity.Household) error {
