@@ -3,7 +3,7 @@
 package repository
 
 import (
-	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
 	"github.com/polivera/home-organization-app/internal/household/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 )
@@ -11,6 +11,10 @@ import (
 type HouseholdRepository interface {
 	CreateHousehold(householdEntity *entity.Household) error
 	GetUserHouseholdByName(
+		name valueobject.HouseholdNameVO,
+		owner commonValueObject.IDVO,
+	) (*entity.HouseholdEntity, error)
+	GetHouseholdByID(id commonValueObject.IDVO) (*entity.HouseholdEntity, error)
 		name valueobject.HouseholdNameVO,
 		owner commonValueObject.IDVO,
 	) (*entity.Household, error)
