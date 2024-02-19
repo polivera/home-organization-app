@@ -22,10 +22,10 @@ func NewHouseholdEntityMatcher(id uint64, name string, owner uint64) gomock.Matc
 }
 
 func (hem householdEntityMatcher) Matches(param interface{}) bool {
-	if reflect.TypeOf(param).String() != "*entity.HouseholdEntity" {
+	if reflect.TypeOf(param).String() != "*entity.Household" {
 		return false
 	}
-	householdEntity, ok := param.(*entity.HouseholdEntity)
+	householdEntity, ok := param.(*entity.Household)
 	if !ok {
 		return false
 	}

@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/polivera/home-organization-app/internal/common"
-	commonVO "github.com/polivera/home-organization-app/internal/common/valueobject"
+	commonVO "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/household"
 	"github.com/polivera/home-organization-app/internal/household/domain"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
@@ -46,7 +46,7 @@ func (chs *createHouseholdService) Handle(command command.CreateHouseholdCommand
 		}
 	}
 
-	var hhEntity entity.HouseholdEntity
+	var hhEntity entity.Household
 	hhEntity.Name = hhName.Value()
 	hhEntity.Owner = owner.Value()
 	if err = chs.householdRepo.CreateHousehold(&hhEntity); err != nil {
@@ -54,7 +54,7 @@ func (chs *createHouseholdService) Handle(command command.CreateHouseholdCommand
 	}
 
 	return &domain.HouseholdDTO{
-		Id:    hhEntity.Id,
+		ID:    hhEntity.Id,
 		Name:  hhEntity.Name,
 		Owner: hhEntity.Owner,
 	}, nil

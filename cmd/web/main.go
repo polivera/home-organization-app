@@ -7,7 +7,7 @@ import (
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	"github.com/polivera/home-organization-app/internal/household/domain/service"
-	"github.com/polivera/home-organization-app/internal/household/infrastructure/repository"
+	householdRepository "github.com/polivera/home-organization-app/internal/household/infrastructure/repository"
 )
 
 func main() {
@@ -17,12 +17,16 @@ func main() {
 		panic("can't open database")
 	}
 
-	repo := repository.NewHouseholdRepository(db)
-	srv := service.NewCreateHouseholdService(repo)
-	dto, err := srv.Handle(command.NewCreateHouseholdCommand("MyHousehold", 9))
-	if err != nil {
-		fmt.Printf("I got an error: %s", err.Error())
-	}
+	//householdRepo := householdRepository.NewHouseholdRepository(db)
+	householdUserRepo := householdRepository.NewHouseholdUserRepository(db)
+	//userRepo := userRepository.NewUserRepository(db)
 
-	fmt.Println(dto)
+	huService := service.NewAddHouseholdUserService(householdUserRepo)
+	res, err := huService.Handle(command.NewAddUserToHouseholdCommand(2, 8))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(res)
 }
+
+// 1, 8

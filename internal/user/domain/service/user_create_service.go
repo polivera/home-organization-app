@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/polivera/home-organization-app/internal/common"
-	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/user"
 	"github.com/polivera/home-organization-app/internal/user/domain"
 	"github.com/polivera/home-organization-app/internal/user/domain/command"

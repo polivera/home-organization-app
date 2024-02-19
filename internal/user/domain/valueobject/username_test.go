@@ -3,9 +3,9 @@
 package valueobject_test
 
 import (
-	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"testing"
 
+	"github.com/polivera/home-organization-app/internal/user/domain/valueobject"
 	"github.com/stretchr/testify/assert"
 )
 

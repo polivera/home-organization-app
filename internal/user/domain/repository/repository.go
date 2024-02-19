@@ -3,7 +3,7 @@
 package repository
 
 import (
-	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/user/infrastructure/entity"
 )
 

@@ -1,7 +1,7 @@
 package valueobject
 
 import (
-	"github.com/polivera/home-organization-app/internal/common/valueobject"
+	"github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/pkg/utils"
 )
 

@@ -4,6 +4,8 @@ package service_test
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	"github.com/polivera/home-organization-app/internal/household/domain/repository"
 	"github.com/polivera/home-organization-app/internal/household/domain/service"
@@ -13,7 +15,6 @@ import (
 	"github.com/polivera/home-organization-app/test/household/matchers"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestCreateHouseholdService_Handle(t *testing.T) {
@@ -80,20 +81,20 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 		householdRepo.EXPECT().
 			CreateHousehold(matchers.NewHouseholdEntityMatcher(0, "THE HOLD", 25)).
 			Times(1).
-			DoAndReturn(func(hhEntity *entity.HouseholdEntity) error {
+			DoAndReturn(func(hhEntity *entity.Household) error {
 				hhEntity.Id = 123
 				return nil
 			})
 
 		handle := service.NewCreateHouseholdService(householdRepo)
 		householdDTO, err := handle.Handle(cmd)
-		expectedEntity := entity.HouseholdEntity{
+		expectedEntity := entity.Household{
 			Id:    123,
 			Name:  "THE HOLD",
 			Owner: 25,
 		}
 		assert.NoError(t, err)
-		assert.Equal(t, householdDTO.Id, expectedEntity.Id)
+		assert.Equal(t, householdDTO.ID, expectedEntity.Id)
 		assert.Equal(t, householdDTO.Name, expectedEntity.Name)
 		assert.Equal(t, householdDTO.Owner, expectedEntity.Owner)
 	})
