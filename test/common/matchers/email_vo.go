@@ -2,7 +2,7 @@ package matchers
 
 import (
 	"fmt"
-	commonValueObject "github.com/polivera/home-organization-app/internal/common/valueobject"
+	commonValueObject "github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"go.uber.org/mock/gomock"
 	"reflect"
 )

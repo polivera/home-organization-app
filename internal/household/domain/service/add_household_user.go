@@ -8,27 +8,20 @@ import (
 	"github.com/polivera/home-organization-app/internal/household/domain"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	"github.com/polivera/home-organization-app/internal/household/domain/repository"
-	userRepository "github.com/polivera/home-organization-app/internal/user/domain/repository"
 )
 
 type addHouseholdUserService struct {
-	householdRepo     repository.HouseholdRepository
 	householdUserRepo repository.HouseholdUsersRepository
-	userRepo          userRepository.UserRepository
 }
 
 func NewAddHouseholdUserService(
-	householdRepo repository.HouseholdRepository,
 	householdUserRepo repository.HouseholdUsersRepository,
-	userRepo userRepository.UserRepository,
 ) common.DomainService[
 	command.AddUserToHouseholdCommand,
 	domain.HouseholdDTO,
 ] {
 	return &addHouseholdUserService{
-		householdRepo:     householdRepo,
 		householdUserRepo: householdUserRepo,
-		userRepo:          userRepo,
 	}
 }
 
@@ -52,7 +45,7 @@ func (ahs addHouseholdUserService) Handle(command command.AddUserToHouseholdComm
 	}
 
 	return &domain.HouseholdDTO{
-		Id:           householdID.Value(),
+		ID:           householdID.Value(),
 		Name:         "",
 		Owner:        0,
 		Participants: []domain.Participant{{ID: userID.Value()}},
