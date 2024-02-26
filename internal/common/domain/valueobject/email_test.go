@@ -39,3 +39,7 @@ func TestEmail(t *testing.T) {
 		}
 	})
 }
+
+func TestSomethingSomething(t *testing.T) {
+
+}

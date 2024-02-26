@@ -15,6 +15,7 @@ type HouseholdRepository interface {
 		owner commonValueObject.IDVO,
 	) (*entity.Household, error)
 	GetHouseholdByID(id commonValueObject.IDVO) (*entity.Household, error)
+	GetHouseholdsByUserID(id commonValueObject.IDVO) ()
 }
 
 type HouseholdUsersRepository interface {

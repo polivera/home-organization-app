@@ -10,3 +10,4 @@ type HouseholdUser struct {
 	HouseholdID uint64
 	UserID      uint64
 }
+
