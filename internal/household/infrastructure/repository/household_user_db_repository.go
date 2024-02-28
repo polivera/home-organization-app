@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"database/sql"
+	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 	"strings"
 
 	"github.com/polivera/home-organization-app/internal/common/domain/valueobject"
@@ -35,4 +37,44 @@ func (h householdUserRepository) AddHouseholdUser(householdID valueobject.IDVO, 
 		}
 	}
 	return err
+}
+
+func (h householdUserRepository) GetUserHouseholds(userID valueobject.IDVO) ([]entity.Household, error) {
+	rows, err := h.dbConn.Query(
+		`
+		SELECT h.id, h.name, h.owner 
+		FROM households h
+		INNER JOIN household_users hu ON h.id = hu.household_id
+		WHERE h.owner = ? OR hu.user_id = ?;
+		`,
+		userID.Value(),
+		userID.Value(),
+	)
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			//todo Log
+		}
+	}(rows)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var allResults []entity.Household
+	for rows.Next() {
+		var householdEntity entity.Household
+
+		if err = rows.Scan(
+			&householdEntity.Id,
+			&householdEntity.Name,
+			&householdEntity.Owner,
+		); err != nil {
+			// todo Log
+			continue
+		}
+		allResults = append(allResults, householdEntity)
+	}
+
+	return allResults, nil
 }

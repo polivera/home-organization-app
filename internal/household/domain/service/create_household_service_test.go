@@ -96,6 +96,6 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, householdDTO.ID, expectedEntity.Id)
 		assert.Equal(t, householdDTO.Name, expectedEntity.Name)
-		assert.Equal(t, householdDTO.Owner, expectedEntity.Owner)
+		assert.Equal(t, householdDTO.OwnerID, expectedEntity.Owner)
 	})
 }

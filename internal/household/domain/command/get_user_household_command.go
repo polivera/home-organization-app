@@ -4,8 +4,8 @@ type GetUserHouseholdsCommand struct {
 	userID uint64
 }
 
-func NewGetUserHouseholdsCommand(userID uint64) AddUserToHouseholdCommand {
-	return AddUserToHouseholdCommand{
+func NewGetUserHouseholdsCommand(userID uint64) GetUserHouseholdsCommand {
+	return GetUserHouseholdsCommand{
 		userID: userID,
 	}
 }

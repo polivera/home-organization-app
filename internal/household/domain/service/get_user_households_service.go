@@ -16,21 +16,45 @@ func NewGetUserHouseholdsService(
 	householdUserRepo repository.HouseholdUsersRepository,
 ) common.DomainService[
 	command.GetUserHouseholdsCommand,
-	domain.HouseholdDTO,
+	domain.UserHouseholdsDTO,
 ] {
 	return &getUserHouseholdsService{
 		householdUserRepo: householdUserRepo,
 	}
 }
 
-func (guh getUserHouseholdsService) Handle(command command.GetUserHouseholdsCommand) (*domain.HouseholdDTO, error) {
+func (guh getUserHouseholdsService) Handle(command command.GetUserHouseholdsCommand) (*domain.UserHouseholdsDTO, error) {
 	userID := valueobject.NewID(command.User())
 
 	if !userID.IsValid() {
 		return nil, common.ErrorValidation{Field: "user_id"}
 	}
 
+	res, err := guh.householdUserRepo.GetUserHouseholds(userID)
 
+	if err != nil {
+		return nil, common.RepositoryUnexpectedError{Message: err.Error()}
+	}
 
-	return nil, nil
+	var ownedHouseholds []domain.HouseholdDTO
+	var participantHousehold []domain.HouseholdDTO
+	var householdDTO domain.HouseholdDTO
+	for _, household := range res {
+		householdDTO.ID = household.Id
+		householdDTO.OwnerID = household.Owner
+		householdDTO.Name = household.Name
+
+		if household.Owner == userID.Value() {
+			ownedHouseholds = append(ownedHouseholds, householdDTO)
+			continue
+		}
+
+		participantHousehold = append(participantHousehold, householdDTO)
+	}
+
+	return &domain.UserHouseholdsDTO{
+		UserID:      userID.Value(),
+		Owned:       ownedHouseholds,
+		Participate: participantHousehold,
+	}, nil
 }

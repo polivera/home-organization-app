@@ -21,8 +21,8 @@ func main() {
 	householdUserRepo := householdRepository.NewHouseholdUserRepository(db)
 	//userRepo := userRepository.NewUserRepository(db)
 
-	huService := service.NewAddHouseholdUserService(householdUserRepo)
-	res, err := huService.Handle(command.NewAddUserToHouseholdCommand(2, 8))
+	huService := service.NewGetUserHouseholdsService(householdUserRepo)
+	res, err := huService.Handle(command.NewGetUserHouseholdsCommand(8))
 	if err != nil {
 		fmt.Println(err.Error())
 	}
