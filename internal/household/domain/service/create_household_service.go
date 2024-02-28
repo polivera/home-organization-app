@@ -54,7 +54,7 @@ func (chs *createHouseholdService) Handle(command command.CreateHouseholdCommand
 	}
 
 	return &domain.HouseholdDTO{
-		ID:      hhEntity.Id,
+		ID:      hhEntity.ID,
 		Name:    hhEntity.Name,
 		OwnerID: hhEntity.Owner,
 	}, nil

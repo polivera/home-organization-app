@@ -2,12 +2,12 @@ package service_test
 
 import (
 	"errors"
-	"github.com/polivera/home-organization-app/internal/household/domain/service"
 	"testing"
 
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/household/domain/command"
 	householdRepoPkg "github.com/polivera/home-organization-app/internal/household/domain/repository"
+	"github.com/polivera/home-organization-app/internal/household/domain/service"
 	"github.com/polivera/home-organization-app/test/common/matchers"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"

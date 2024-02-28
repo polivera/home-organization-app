@@ -40,7 +40,7 @@ func (guh getUserHouseholdsService) Handle(command command.GetUserHouseholdsComm
 	var participantHousehold []domain.HouseholdDTO
 	var householdDTO domain.HouseholdDTO
 	for _, household := range res {
-		householdDTO.ID = household.Id
+		householdDTO.ID = household.ID
 		householdDTO.OwnerID = household.Owner
 		householdDTO.Name = household.Name
 

@@ -2,9 +2,10 @@ package matchers
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 	"go.uber.org/mock/gomock"
-	"reflect"
 )
 
 type householdEntityMatcher struct {
@@ -29,7 +30,7 @@ func (hem householdEntityMatcher) Matches(param interface{}) bool {
 	if !ok {
 		return false
 	}
-	return householdEntity.Id == hem.id &&
+	return householdEntity.ID == hem.id &&
 		householdEntity.Name == hem.name &&
 		householdEntity.Owner == hem.owner
 }

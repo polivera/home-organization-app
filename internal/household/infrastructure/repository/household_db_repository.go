@@ -31,7 +31,7 @@ func (h householdRepository) CreateHousehold(householdEntity *entity.Household) 
 		return err
 	}
 	insertedId, err := result.LastInsertId()
-	householdEntity.Id = uint64(insertedId)
+	householdEntity.ID = uint64(insertedId)
 	return err
 }
 
@@ -50,7 +50,7 @@ func (h householdRepository) GetUserHouseholdByName(
 	)
 	var householdEntity entity.Household
 	if err := result.Scan(
-		&householdEntity.Id,
+		&householdEntity.ID,
 		&householdEntity.Name,
 		&householdEntity.Owner,
 	); err != nil {
@@ -73,7 +73,7 @@ func (h householdRepository) GetHouseholdByID(id commonValueObject.IDVO) (*entit
 	)
 	var householdEntity entity.Household
 	if err := result.Scan(
-		&householdEntity.Id,
+		&householdEntity.ID,
 		&householdEntity.Name,
 		&householdEntity.Owner,
 	); err != nil {

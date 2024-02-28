@@ -7,7 +7,7 @@ import (
 
 func HouseholdEntityFakerRandom() entity.Household {
 	return entity.Household{
-		Id:    uint64(faker.RandomUnixTime()),
+		ID:    uint64(faker.RandomUnixTime()),
 		Name:  faker.Name(),
 		Owner: uint64(faker.RandomUnixTime()),
 	}

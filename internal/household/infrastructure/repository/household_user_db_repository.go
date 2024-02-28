@@ -2,12 +2,12 @@ package repository
 
 import (
 	"database/sql"
-	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 	"strings"
 
 	"github.com/polivera/home-organization-app/internal/common/domain/valueobject"
 	"github.com/polivera/home-organization-app/internal/common/infrastructure/database"
 	"github.com/polivera/home-organization-app/internal/household/domain/repository"
+	"github.com/polivera/home-organization-app/internal/household/infrastructure/entity"
 )
 
 type householdUserRepository struct {
@@ -66,7 +66,7 @@ func (h householdUserRepository) GetUserHouseholds(userID valueobject.IDVO) ([]e
 		var householdEntity entity.Household
 
 		if err = rows.Scan(
-			&householdEntity.Id,
+			&householdEntity.ID,
 			&householdEntity.Name,
 			&householdEntity.Owner,
 		); err != nil {

@@ -82,19 +82,19 @@ func TestCreateHouseholdService_Handle(t *testing.T) {
 			CreateHousehold(matchers.NewHouseholdEntityMatcher(0, "THE HOLD", 25)).
 			Times(1).
 			DoAndReturn(func(hhEntity *entity.Household) error {
-				hhEntity.Id = 123
+				hhEntity.ID = 123
 				return nil
 			})
 
 		handle := service.NewCreateHouseholdService(householdRepo)
 		householdDTO, err := handle.Handle(cmd)
 		expectedEntity := entity.Household{
-			Id:    123,
+			ID:    123,
 			Name:  "THE HOLD",
 			Owner: 25,
 		}
 		assert.NoError(t, err)
-		assert.Equal(t, householdDTO.ID, expectedEntity.Id)
+		assert.Equal(t, householdDTO.ID, expectedEntity.ID)
 		assert.Equal(t, householdDTO.Name, expectedEntity.Name)
 		assert.Equal(t, householdDTO.OwnerID, expectedEntity.Owner)
 	})
