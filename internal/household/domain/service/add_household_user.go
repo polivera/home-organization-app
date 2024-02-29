@@ -48,7 +48,7 @@ func (ahs addHouseholdUserService) Handle(command command.AddUserToHouseholdComm
 	return &domain.HouseholdDTO{
 		ID:           householdID.Value(),
 		Name:         "",
-		Owner:        0,
+		OwnerID:      0,
 		Participants: []domain.Participant{{ID: userID.Value()}},
 	}, nil
 }

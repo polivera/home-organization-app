@@ -19,4 +19,5 @@ type HouseholdRepository interface {
 
 type HouseholdUsersRepository interface {
 	AddHouseholdUser(householdID commonValueObject.IDVO, userID commonValueObject.IDVO) error
+	GetUserHouseholds(userID commonValueObject.IDVO) ([]entity.Household, error)
 }

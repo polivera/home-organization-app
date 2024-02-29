@@ -1,7 +1,7 @@
 package entity
 
 type Household struct {
-	Id    uint64
+	ID    uint64
 	Name  string
 	Owner uint64
 }
